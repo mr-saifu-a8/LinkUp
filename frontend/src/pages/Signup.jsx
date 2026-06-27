@@ -39,7 +39,7 @@ const Signup = () => {
 
                 <Input email={email} password={password} showPassword={showPassword} inputHandler={inputHandler} showPassword={showPassword} setshowPassword={setshowPassword} submitHandler={submitHandler} />
 
-                <Footer />
+            <Footer  { ...{title :"Already have an account?", tag : "Sign in"}} />
             </div>
         </div>
     )

@@ -121,6 +121,7 @@ const Input = (props) => {
           text-white
           font-medium
           shadow-lg
+          transition-colors
           ${props.email && props.password ? "bg-pink-500" : "bg-pink-400"}
           `}
         onClick={(e) => {

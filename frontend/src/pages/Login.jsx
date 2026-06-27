@@ -50,7 +50,7 @@ export default function Login() {
         {/* forgot password */}
         <Forgot_password />
 
-        <Footer />
+        <Footer {...{title: "Don't have an account?", tag: "Sign up"}} />
 
       </div>
     </div>
