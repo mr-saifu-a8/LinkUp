@@ -1,19 +1,19 @@
 import React from 'react'
-import Login from './pages/Login'
 import { Routes, Route } from 'react-router-dom'
 import { Heading1, Home } from 'lucide-react'
-import Signup from './pages/Signup'
-import Dashboard from "./pages/Dashboard"
+
+import { Dashboard , Login , Signup , Auth, ForgotPassPage } from "./pages/index"
+
 const App = () => {
   return (
     <div className=''>
      
      <Routes>
-      <Route path="/auth/login" element={<Login />} />
-      <Route path="/auth/signup" element={<Signup />} />
-      <Route path="/forgotpassword" element={ <h1>forgot passowrd page</h1>} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/forgotpassword" element={ <ForgotPassPage /> } />
       <Route path="/home" element={ <Dashboard /> } />
-
+      <Route path='/auth' element= { <Auth /> } />  
 
 
      </Routes>

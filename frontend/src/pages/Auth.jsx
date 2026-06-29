@@ -1,12 +1,14 @@
 import React from 'react'
 import Arrowbutton from '../components/Arrowbutton'
 
-const auth = () => {
+const Auth = () => {
   return (
     <div>
         <Arrowbutton />
+        <h1>auth
+        </h1>
     </div>
   )
 }
 
-export default auth
+export default Auth;

@@ -15,7 +15,7 @@ const Footer = ({title, tag}) => {
           </span>
           <div className="h-px bg-gray-200 flex-1" />
         </div>
-
+{/* sign in with google , facebook or apple */}
         <div className="flex justify-center gap-9">
 
             <Logo logo = { googlelogo } />

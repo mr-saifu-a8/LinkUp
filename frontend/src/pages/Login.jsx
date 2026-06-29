@@ -10,33 +10,37 @@ import Forgot_password from "../components/Forgot_password";
 
 export default function Login() {
 
+ console.log(true);
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
   const [showPassword, setshowPassword] = useState(false);
 
   const inputHandler = (e) => {
-    const elem = e.target.name;
-    const value = e.target.value;
+    const { name, value } = e.target;
 
-    if (elem === "email") setemail(value);
-    if (elem === "password") setpassword(value);
+    if (name === "email") setemail(value);
+    if (name === "password") setpassword(value);
   }
 
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log(`email ${email}`);
-    console.log(`password ${password}`);
     setemail("");
     setpassword("");
   }
 
+  // grouping props into an object 
+  const Inputprops = {
+    email,
+    password, showPassword, setshowPassword, inputHandler, submitHandler
+  }
+
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center px-6">
-      <div className="w-full max-w-sm flex flex-col ">
+    <div className="min-h-screen bg-white flex  justify-center px-6 md:p-8 items-center">
+      <div className="w-full max-w-sm  flex flex-col ">
 
         {/* back button */}
 
-        <Link to="/auth/signup" >
+        <Link to="/signup" >
           <Arrowbutton />
         </Link>
 
@@ -45,12 +49,12 @@ export default function Login() {
         <Header title="Login to your" subtitle="Account" />
 
         {/* Input field----email---password---- */}
-        <Input email={email} password={password} showPassword={showPassword} inputHandler={inputHandler} showPassword={showPassword} setshowPassword={setshowPassword} submitHandler={submitHandler} />
+        <Input {...Inputprops} />
 
         {/* forgot password */}
         <Forgot_password />
 
-        <Footer {...{title: "Don't have an account?", tag: "Sign up"}} />
+        <Footer {...{ title: "Don't have an account?", tag: "Sign up" }} />
 
       </div>
     </div>

@@ -62,10 +62,9 @@ const Input = (props) => {
                 pl-12
                 pr-12
       
-                    focus:outline-pink-500 
-              focus:outline-3
-               focus:bg-pink-50
-               focus:
+              focus:outline-pink-500 
+                focus:outline-3
+              focus:bg-pink-50
                 "
             value={props.password}
             onChange={(e) => {
@@ -103,7 +102,7 @@ const Input = (props) => {
       {/* remember me */}
       <div className="flex justify-center items-center gap-2 mt-5">
 
-        <input type="checkbox" className="cursor-pointer accent-pink-500 w-4 h-4 " />
+        <input type="checkbox" name='remember me' className="cursor-pointer accent-pink-500 w-4 h-4 " />
 
         <span className="text-sm font-semibold ">
           Remember me

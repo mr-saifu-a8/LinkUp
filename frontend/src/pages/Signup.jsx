@@ -12,34 +12,38 @@ const Signup = () => {
     const [showPassword, setshowPassword] = useState(false);
 
     const inputHandler = (e) => {
-        const elem = e.target.name;
-        const value = e.target.value;
+        const { name, value } = e.target;
 
-        if (elem === "email") setemail(value);
-        if (elem === "password") setpassword(value);
+        if (name === "email") setemail(value);
+        if (name === "password") setpassword(value);
     }
 
     const submitHandler = (e) => {
         e.preventDefault();
-        console.log(`email ${email}`);
-        console.log(`password ${password}`);
         setemail("");
         setpassword("");
     }
+
+    // grouping props into an object 
+    const Inputprops = {
+        email,
+        password, showPassword, setshowPassword, inputHandler, submitHandler
+    }
+
     return (
-        <div className="min-h-screen bg-white flex items-center justify-center px-6" >
+        <div className="min-h-screen bg-white flex items-center justify-center px-6 md:px-8" >
             <div className="w-full max-w-sm flex flex-col " >
 
-                <Link to="/auth/login" >
+                <Link to="/login" >
                     <Arrowbutton />
                 </Link>
 
                 <Header title="Create your" subtitle={"Account"} />
 
 
-                <Input email={email} password={password} showPassword={showPassword} inputHandler={inputHandler} showPassword={showPassword} setshowPassword={setshowPassword} submitHandler={submitHandler} />
+                <Input {...Inputprops} />
 
-            <Footer  { ...{title :"Already have an account?", tag : "Sign in"}} />
+                <Footer  {...{ title: "Already have an account?", tag: "Sign in" }} />
             </div>
         </div>
     )
