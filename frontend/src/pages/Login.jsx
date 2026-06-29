@@ -10,7 +10,6 @@ import Forgot_password from "../components/Forgot_password";
 
 export default function Login() {
 
-  console.log(true);
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
   const [showPassword, setshowPassword] = useState(false);

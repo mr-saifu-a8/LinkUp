@@ -1,9 +1,36 @@
 import React from 'react'
 import { Mail, EyeOff, Lock, Eye } from 'lucide-react';
-
+import { useState } from 'react';
 
 const Input = (props) => {
 
+  const [error, seterror] = useState({email: "", password: "",});
+  const validate = true;
+
+  // console.log({...error});
+
+  // const validate = () => {
+  //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  //   const passwordRegex =
+  //     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  //   if (props.email) {
+  //     if (!emailRegex.test(props.email)) {
+  //       seterror({...error, email: "email is invalid", password: ""});
+  //     }
+  //     else {
+  //       seterror({...error, email: ""});
+  //     }
+  //   }
+
+  //   if (props.password) {
+  //     if (!passwordRegex.test(props.password)) {
+  //       seterror({...error, email:"" ,password: "email is invalid"});
+  //     }
+  //     else seterror({...error, password: ""});
+  //   }
+  //   else seterror({...error, email: "", password: ""});
+
+  // }
   return (
     <form >
 
@@ -41,7 +68,10 @@ const Input = (props) => {
             onChange={(e) => {
               props.inputHandler(e);
             }}
+            onBlur={validate}
+
           />
+          {error.email && <span className='px-4 capitalize text-red-600 font-semibold text-md'> {error.email} </span>}
         </div>
         {/* input password --- show hide feature*/}
         <div className="relative group ">
@@ -71,6 +101,7 @@ const Input = (props) => {
               props.inputHandler(e);
             }}
             name="password"
+            onBlur={validate}
           />
 
           {props.showPassword ? <Eye
@@ -94,6 +125,7 @@ const Input = (props) => {
               props.setshowPassword(!props.showPassword)
             }} />}
 
+          {error.password && <span className='px-4 capitalize text-red-600 font-semibold text-md'> {error} </span>}
 
         </div>
 
@@ -123,6 +155,7 @@ const Input = (props) => {
           transition-colors
           ${props.email && props.password ? "bg-pink-500" : "bg-pink-400"}
           `}
+
         onClick={(e) => {
           props.submitHandler(e);
         }}
