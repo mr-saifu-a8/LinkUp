@@ -10,7 +10,7 @@ import Forgot_password from "../components/Forgot_password";
 
 export default function Login() {
 
- console.log(true);
+  console.log(true);
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
   const [showPassword, setshowPassword] = useState(false);
@@ -35,15 +35,14 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-white flex  justify-center px-6 md:p-8 items-center">
+    <div className="min-h-screen bg-white flex  justify-center px-6 md:px-8 items-center">
       <div className="w-full max-w-sm  flex flex-col ">
 
         {/* back button */}
 
-        <Link to="/signup" >
+        <Link to="/signup" className="self-start" >
           <Arrowbutton />
         </Link>
-
 
         {/* heading---Login to your account */}
         <Header title="Login to your" subtitle="Account" />
@@ -59,4 +58,4 @@ export default function Login() {
       </div>
     </div>
   );
-}
+};

@@ -25,7 +25,7 @@ const Footer = ({title, tag}) => {
         </div>
 
         {/* don't have account */}
-        <p className="text-center mt-10 text-md text-gray-400">
+        <p className="text-center mt-6 sm:mt-10 text-md text-gray-400">
             {title}
           <a href="" className="text-pink-500  ml-1">
             {tag}

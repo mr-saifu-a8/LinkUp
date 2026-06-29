@@ -3,7 +3,7 @@ import React from 'react'
 
 const Arrowbutton = () => {
   return (
-      <ArrowLeft size={40}  className="cursor-pointer  text-gray-500" />
+      <ArrowLeft   className="cursor-pointer size-8 lg:size-10  text-gray-500" />
       
   )
 }

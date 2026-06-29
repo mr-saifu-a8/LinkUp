@@ -6,7 +6,7 @@ import { Dashboard , Login , Signup , Auth, ForgotPassPage } from "./pages/index
 
 const App = () => {
   return (
-    <div className=''>
+    
      
      <Routes>
       <Route path="/login" element={<Login />} />
@@ -17,7 +17,7 @@ const App = () => {
 
 
      </Routes>
-    </div>
+
   )
 }
 

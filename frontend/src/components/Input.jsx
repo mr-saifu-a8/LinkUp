@@ -8,7 +8,7 @@ const Input = (props) => {
     <form >
 
       {/* input email & password field ---- */}
-      <div className="mt-12 space-y-4">
+      <div className="mt-10 sm:mt-12 space-y-4">
 
         <div className="relative group">
 
