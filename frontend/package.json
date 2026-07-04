@@ -13,7 +13,11 @@
     "lucide-react": "^1.22.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
+<<<<<<< HEAD
     "react-icons": "^5.7.0",
+=======
+    "react-icons": "^5.6.0",
+>>>>>>> f97e8a079325cb89efd6077a55408e8ccad451c6
     "react-router-dom": "^7.18.1"
   },
   "devDependencies": {
