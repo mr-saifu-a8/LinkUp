@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import AuthLayout from "../layouts/AuthLayout";
 import PageBackground from "../layouts/PageBackground";
 import Button from "../components/Button";
@@ -8,27 +9,74 @@ import SocialButtons from "../components/SocialButtons";
 import Checkbox from "../components/Checkbox";
 import { BrandLogo } from "../components/Illustrations";
 import { FiArrowLeft } from "react-icons/fi";
+import { useAuth } from "../contexts/AuthContext";
 
 const SIGNUP_IMAGE =
   "https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=1200&auto=format&fit=crop";
 
 export default function SignupPage() {
   const navigate = useNavigate();
+  const { register } = useAuth();
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [agree, setAgree] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const passwordState =
-    password.length === 0 ? "default" : password.length < 6 ? "error" : "success";
+    password.length === 0
+      ? "default"
+      : password.length < 6
+        ? "error"
+        : "success";
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    navigate("/success", { state: { title: "Account created" } });
+    if (!agree) {
+      const message = "Please accept the terms and privacy policy";
+      setError(message);
+      toast.error(message);
+      return;
+    }
+
+    const emailRegex = /^\S+@\S+\.\S+$/;
+    if (!emailRegex.test(email)) {
+      const message = "Please enter a valid email address";
+      setError(message);
+      toast.error(message);
+      return;
+    }
+
+    if (name.trim().length < 2) {
+      const message = "Name must be at least 2 characters";
+      setError(message);
+      toast.error(message);
+      return;
+    }
+
+    setError("");
+    setLoading(true);
+
+    try {
+      await register(name, email, password);
+      toast.success("Account created successfully");
+      navigate("/dashboard");
+    } catch (err) {
+      const message = err.message || "Signup failed";
+      setError(message);
+      toast.error(message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <PageBackground>
-      <AuthLayout image={SIGNUP_IMAGE} imageAlt="Person taking notes while studying">
+      <AuthLayout
+        image={SIGNUP_IMAGE}
+        imageAlt="Person taking notes while studying"
+      >
         <div className="flex-1 flex flex-col">
           <div className="flex items-center justify-between">
             <BrandLogo />
@@ -52,6 +100,15 @@ export default function SignupPage() {
           </div>
 
           <div className="mt-8 space-y-5">
+            <div className="rounded-2xl border border-brand/10 bg-brand/5 p-4 text-sm text-ink-light">
+              <p className="font-semibold text-ink">Why join LinkUp?</p>
+              <ul className="mt-2 space-y-1">
+                <li>• Secure account creation with password validation</li>
+                <li>• Duplicate email protection</li>
+                <li>• Quick recovery with OTP-based password reset</li>
+              </ul>
+            </div>
+
             <p className="text-sm font-medium text-ink">Sign up with:</p>
             <SocialButtons layout="grid" />
 
@@ -62,6 +119,14 @@ export default function SignupPage() {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-5">
+              <InputField
+                label="Full name"
+                icon="none"
+                type="text"
+                placeholder="Enter your name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
               <InputField
                 label="E-mail"
                 icon="none"
@@ -93,7 +158,10 @@ export default function SignupPage() {
                 label="I agree to the Terms & Privacy Policy"
               />
 
-              <Button type="submit">Sign up</Button>
+              {error && <p className="text-sm text-red-500">{error}</p>}
+              <Button type="submit" disabled={loading}>
+                {loading ? "Creating account..." : "Sign up"}
+              </Button>
             </form>
 
             <p className="text-center text-sm text-ink-light">
