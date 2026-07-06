@@ -1,12 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import SplashPage from "./pages/SplashPage";
-import OnboardingPage from "./pages/OnboardingPage";
-import WelcomePage from "./pages/WelcomePage";
-import LoginPage from "./pages/LoginPage";
-import SignupPage from "./pages/SignupPage";
-import SuccessPage from "./pages/SuccessPage";
-import DashboardPage from "./pages/DashboardPage";
-import ProtectedRoute from "./components/ProtectedRoute";
+
+import { LoginPage, OnboardingPage, SignupPage, SplashPage, SuccessPage, WelcomePage, ChattingPage } from "./pages/LinkUpPages";
 
 export default function App() {
   return (
@@ -17,11 +11,7 @@ export default function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/success" element={<SuccessPage />} />
-
-      <Route element={<ProtectedRoute />}>
-        <Route path="/dashboard" element={<DashboardPage />} />
-      </Route>
-
+      <Route path="/chat" element={<ChattingPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
