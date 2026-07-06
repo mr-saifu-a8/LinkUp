@@ -26,6 +26,7 @@ const ChattingPage = () => {
       imgUrl: "https://randomuser.me/api/portraits/men/3.jpg"
     },
   ];
+
   const chatProfiles = [
     {
       profileUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600",
