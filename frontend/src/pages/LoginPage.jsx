@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import AuthLayout from "../layouts/AuthLayout";
 import PageBackground from "../layouts/PageBackground";
 import Button from "../components/Button";
@@ -8,22 +9,83 @@ import SocialButtons from "../components/SocialButtons";
 import Checkbox from "../components/Checkbox";
 import { BrandLogo } from "../components/Illustrations";
 import { FiArrowLeft } from "react-icons/fi";
+import { useAuth } from "../contexts/AuthContext";
 
 const LOGIN_IMAGE =
   "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1200&auto=format&fit=crop";
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const { login, requestPasswordReset, confirmPasswordReset } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [resetLoading, setResetLoading] = useState(false);
+  const [showReset, setShowReset] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
+  const [otp, setOtp] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [resetStep, setResetStep] = useState(1);
+  const [error, setError] = useState("");
 
   const passwordState =
-    password.length === 0 ? "default" : password.length < 6 ? "error" : "success";
+    password.length === 0
+      ? "default"
+      : password.length < 6
+        ? "error"
+        : "success";
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    navigate("/success", { state: { title: "Signed in successfully" } });
+    setError("");
+    setLoading(true);
+
+    try {
+      await login(email, password);
+      toast.success("Signed in successfully");
+      navigate("/dashboard");
+    } catch (err) {
+      const message = err.message || "Login failed";
+      setError(message);
+      toast.error(message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleForgotPasswordRequest = async (e) => {
+    e.preventDefault();
+    setResetLoading(true);
+
+    try {
+      await requestPasswordReset(resetEmail);
+      toast.success("OTP sent to your email");
+      setResetStep(2);
+    } catch (err) {
+      toast.error(err.message || "Unable to send OTP");
+    } finally {
+      setResetLoading(false);
+    }
+  };
+
+  const handlePasswordReset = async (e) => {
+    e.preventDefault();
+    setResetLoading(true);
+
+    try {
+      await confirmPasswordReset(resetEmail, otp, newPassword);
+      toast.success("Password updated successfully");
+      setShowReset(false);
+      setResetStep(1);
+      setOtp("");
+      setNewPassword("");
+      setResetEmail("");
+    } catch (err) {
+      toast.error(err.message || "Password reset failed");
+    } finally {
+      setResetLoading(false);
+    }
   };
 
   return (
@@ -46,8 +108,8 @@ export default function LoginPage() {
               Welcome back to <span className="text-brand">SocialApp</span>
             </h1>
             <p className="mt-3 text-sm lg:text-[15px] text-ink-light leading-relaxed max-w-md">
-              Log in to keep up with your friends and the communities you
-              care about.
+              Log in to keep up with your friends and the communities you care
+              about.
             </p>
           </div>
 
@@ -88,16 +150,71 @@ export default function LoginPage() {
               </div>
 
               <div className="flex items-center justify-between">
-                <Checkbox checked={remember} onChange={setRemember} label="Remember me" />
+                <Checkbox
+                  checked={remember}
+                  onChange={setRemember}
+                  label="Remember me"
+                />
                 <button
                   type="button"
+                  onClick={() => setShowReset((value) => !value)}
                   className="text-sm font-medium text-brand hover:underline"
                 >
                   Forgot password?
                 </button>
               </div>
 
-              <Button type="submit">Log in</Button>
+              {error && <p className="text-sm text-red-500">{error}</p>}
+              <Button type="submit" disabled={loading}>
+                {loading ? "Logging in..." : "Log in"}
+              </Button>
+
+              {showReset && (
+                <div className="rounded-2xl border border-gray-200 bg-gray-50 p-4 space-y-3">
+                  {resetStep === 1 ? (
+                    <form
+                      onSubmit={handleForgotPasswordRequest}
+                      className="space-y-3"
+                    >
+                      <InputField
+                        label="Email"
+                        icon="none"
+                        type="email"
+                        placeholder="Enter your email"
+                        value={resetEmail}
+                        onChange={(e) => setResetEmail(e.target.value)}
+                      />
+                      <Button type="submit" disabled={resetLoading}>
+                        {resetLoading ? "Sending OTP..." : "Send OTP"}
+                      </Button>
+                    </form>
+                  ) : (
+                    <form onSubmit={handlePasswordReset} className="space-y-3">
+                      <InputField
+                        label="OTP"
+                        icon="none"
+                        type="text"
+                        placeholder="Enter 6-digit OTP"
+                        value={otp}
+                        onChange={(e) => setOtp(e.target.value)}
+                      />
+                      <InputField
+                        label="New password"
+                        icon="none"
+                        type="password"
+                        placeholder="Enter new password"
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                      />
+                      <Button type="submit" disabled={resetLoading}>
+                        {resetLoading
+                          ? "Updating password..."
+                          : "Reset password"}
+                      </Button>
+                    </form>
+                  )}
+                </div>
+              )}
             </form>
 
             <p className="text-center text-sm text-ink-light">

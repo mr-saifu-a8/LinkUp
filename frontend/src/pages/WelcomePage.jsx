@@ -4,12 +4,19 @@ import PageBackground from "../layouts/PageBackground";
 import Button from "../components/Button";
 import SocialButtons from "../components/SocialButtons";
 import { BrandLogo } from "../components/Illustrations";
+import { useAuth } from "../contexts/AuthContext";
 
 const WELCOME_IMAGE =
   "https://images.pexels.com/photos/7342998/pexels-photo-7342998.jpeg";
 
 export default function WelcomePage() {
   const navigate = useNavigate();
+  const { user } = useAuth();
+
+  if (user) {
+    navigate("/dashboard", { replace: true });
+    return null;
+  }
 
   return (
     <PageBackground>
@@ -19,11 +26,11 @@ export default function WelcomePage() {
 
           <div className="mt-10 lg:mt-14">
             <h1 className="text-[26px] sm:text-3xl lg:text-[34px] font-extrabold text-ink leading-tight">
-              Welcome back to <span className="text-brand">LinkUp</span>
+              Welcome to <span className="text-brand">LinkUp</span>
             </h1>
             <p className="mt-3 text-sm lg:text-[15px] text-ink-light leading-relaxed max-w-md">
-              Connect with friends, share moments, and discover communities
-              that match your interests — all in one place.
+              Connect with friends, share moments, and discover communities that
+              match your interests — all in one place.
             </p>
           </div>
 
@@ -54,7 +61,7 @@ export default function WelcomePage() {
 
           <div className="flex-1" />
           <p className="text-center text-xs text-ink-muted pt-10 lg:pt-6">
-            Copyright © 2026 SocialApp
+            Copyright © 2026 LinkUp
           </p>
         </div>
       </AuthLayout>
